@@ -5,6 +5,7 @@
     <string name="button_camera">Camera</string>
     <string name="button_cancel">Cancel</string>
     <string name="button_choose_from_gallery">Choose from Gallery</string>
+    <string name="button_ok">OK</string>
 
     <string name="alert_no_camera">Your mobile phone has no camera</string>
     <string name="dialog_title_picture_option">Upload Picture Option</string>

@@ -1,17 +1,20 @@
 package com.jompon.bitmapmanager.example;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.provider.Settings;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -20,7 +23,6 @@ import android.widget.Toast;
 import com.jompon.bitmapmanager.BitmapManager;
 
 import java.io.File;
-import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -54,9 +56,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 imgPhoto.setImageURI(mPhotoURI);
             }
             if (requestCode == Constant.REQUEST_SELECT_PICTURE) {
-                if (data == null || (data.getData() == null && data.getClipData() == null)) {
 
-                } else {
+                if( data != null && data.getData() != null ) {
                     mPhotoURI = data.getData();   //reference to image selected path
                     try{
                         File sdImageMainDirectory = bitmapManager.getDestinationImageFilename();
@@ -67,10 +68,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                         save(mPhotoURI);
                         imgPhoto.setImageURI(mPhotoURI);
-                    }catch (IOException e){
-                        Log.e(TAG, e.getMessage()+"");
-                    }catch (SecurityException e){
-                        Toast.makeText(getApplicationContext(), e.getMessage()+"", Toast.LENGTH_LONG).show();
+                    }catch (Exception e){
+                        if( ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ){
+                            showPermissionAlertDialog(getString(R.string.dialog_warning_permission_write_external));
+                        }else{
+                            Toast.makeText(getApplicationContext(), e.getMessage()+"", Toast.LENGTH_LONG).show();
+                        }
                     }
                 }
             }
@@ -114,8 +117,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 startActivityForResult(pictureActionIntent, Constant.REQUEST_SELECT_PICTURE);
                                 break;
                         }
-                    }catch (SecurityException e){
-                        Toast.makeText(getApplicationContext(), e.getMessage()+"", Toast.LENGTH_LONG).show();
+                    }catch (Exception e){
+                        if( ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ){
+                            showPermissionAlertDialog(getString(R.string.dialog_warning_permission_write_external));
+                        }else{
+                            Toast.makeText(getApplicationContext(), e.getMessage()+"", Toast.LENGTH_LONG).show();
+                        }
                     }
                 }
             });
@@ -137,5 +144,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }catch (Exception e){
             Toast.makeText(getApplicationContext(), e.getMessage()+"", Toast.LENGTH_LONG).show();
         }
+    }
+
+    private void showPermissionAlertDialog(String message)
+    {
+        AlertDialog.Builder abPermission = new AlertDialog.Builder(this);
+        abPermission.setIcon(android.R.drawable.ic_dialog_alert);
+        abPermission.setTitle(getString(R.string.dialog_warning));
+        abPermission.setMessage(message);
+        abPermission.setCancelable(false);
+        abPermission.setPositiveButton(R.string.button_ok, new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                Intent myAppSettings = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + getPackageName()));
+                startActivity(myAppSettings);
+                dialog.dismiss();
+            }
+        });
+        AlertDialog dialog = abPermission.create();
+        dialog.show();
     }
 }
