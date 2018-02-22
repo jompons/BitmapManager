@@ -17,8 +17,8 @@ import java.nio.channels.FileChannel;
 public class FileManager {
 
     private static final String TAG = FileManager.class.getSimpleName();
-    private static final File rootExt = new File(Environment.getExternalStorageDirectory() + File.separator + "SendIT" + File.separator + "Driver2Stage" + File.separator);
-    private static final File rootInt = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM) + File.separator + "SendIT" + File.separator + "Driver2Stage" + File.separator);
+    private static final File rootExt = new File(Environment.getExternalStorageDirectory() + File.separator + "Lib" + File.separator + "BitmapManager" + File.separator);
+    private static final File rootInt = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM) + File.separator + "Lib" + File.separator + "BitmapManager" + File.separator);
     protected static FileManager fileManager;
     protected Context context;
     private static File getRoot( )
