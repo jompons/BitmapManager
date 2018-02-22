@@ -189,7 +189,7 @@ public class BitmapManager extends FileManager{
      * save image by replaced to uri path
      * @param uri
      */
-    public void storeImage(Uri uri) {
+    public void storeImage(Uri uri, int quality) {
 
         try {
             Bitmap bitmap = getBitmap(uri);
@@ -197,7 +197,7 @@ public class BitmapManager extends FileManager{
             String path = getRealPathFromUri(uri);
             File pictureFile = new File(path);
             FileOutputStream fos = new FileOutputStream(pictureFile);
-            image.compress(Bitmap.CompressFormat.JPEG, 90, fos);
+            image.compress(Bitmap.CompressFormat.JPEG, quality, fos);
             image.recycle();
             fos.close();
         } catch (FileNotFoundException e) {
@@ -212,13 +212,13 @@ public class BitmapManager extends FileManager{
      * @param image
      * @param uri
      */
-    public void storeImage(Bitmap image, Uri uri) {
+    public void storeImage(Bitmap image, Uri uri, int quality) {
 
         try {
             String path = getRealPathFromUri(uri);
             File pictureFile = new File(path);
             FileOutputStream fos = new FileOutputStream(pictureFile);
-            image.compress(Bitmap.CompressFormat.JPEG, 50, fos);
+            image.compress(Bitmap.CompressFormat.JPEG, quality, fos);
             if( !image.isRecycled() ){
                 image.recycle();
             }

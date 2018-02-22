@@ -141,7 +141,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             double ratio = (double)bitmap.getWidth()/bitmap.getHeight();
             int width = (bitmap.getWidth() <= bitmap.getHeight())? minSize: (int)(minSize*ratio);
             int height = (bitmap.getWidth() <= bitmap.getHeight())? (int)(minSize/ratio): minSize;
-            bitmapManager.storeImage(bitmapManager.rotateWithScale(bitmap, 0, width, height), uri);
+            bitmapManager.storeImage(bitmapManager.rotateWithScale(bitmap, 0, width, height), uri, 90);
             bitmapManager.scanMediaFile(new File(bitmapManager.getRealPathFromUri(uri)));
         }catch (Exception e){
             Toast.makeText(getApplicationContext(), e.getMessage()+"", Toast.LENGTH_LONG).show();
