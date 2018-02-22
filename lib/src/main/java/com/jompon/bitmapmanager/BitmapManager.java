@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * Created by Jompon on 4/12/2016.
+ * Created by Jompon.
  */
 public class BitmapManager extends FileManager{
 

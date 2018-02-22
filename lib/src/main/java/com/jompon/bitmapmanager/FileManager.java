@@ -12,13 +12,13 @@ import java.io.IOException;
 import java.nio.channels.FileChannel;
 
 /**
- * Created by Jompon on 4/7/2016.
+ * Created by Jompon.
  */
 public class FileManager {
 
     private static final String TAG = FileManager.class.getSimpleName();
-    private static final File rootExt = new File(Environment.getExternalStorageDirectory() + File.separator + "Lib" + File.separator + "BitmapManager" + File.separator);
-    private static final File rootInt = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM) + File.separator + "Lib" + File.separator + "BitmapManager" + File.separator);
+    private static File rootExt = new File(Environment.getExternalStorageDirectory() + File.separator + "Lib" + File.separator + "BitmapManager" + File.separator);
+    private static File rootInt = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM) + File.separator + "Lib" + File.separator + "BitmapManager" + File.separator);
     protected static FileManager fileManager;
     protected Context context;
     private static File getRoot( )
@@ -55,6 +55,16 @@ public class FileManager {
         File root = FileManager.getRoot( );
         String imgName = getUniqueImageFilename();
         return new File(root, imgName);
+    }
+
+    public void setRootExt(String path)
+    {
+        rootExt = new File(path);
+    }
+
+    public void setRootInt(String path)
+    {
+        rootInt = new File(path);
     }
 
     public void copyFile(File sourceFile, File destFile) throws IOException {

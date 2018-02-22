@@ -40,6 +40,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnPhoto = (Button) findViewById(R.id.btnPhoto);
         imgPhoto = (ImageView) findViewById(R.id.imgPhoto);
         bitmapManager = BitmapManager.getInstance(this);
+        bitmapManager.setRootExt(Constant.rootExt);
+        bitmapManager.setRootInt(Constant.rootInt);
         btnPhoto.setOnClickListener(this);
     }
 
