@@ -12,9 +12,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.Settings;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -31,18 +33,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Uri mPhotoURI;
     private Button btnPhoto;
     private ImageView imgPhoto;
+    private FloatingActionButton fab;
+    private float rotate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setSupportActionBar(((Toolbar)findViewById(R.id.toolbar)));
 
         btnPhoto = (Button) findViewById(R.id.btnPhoto);
         imgPhoto = (ImageView) findViewById(R.id.imgPhoto);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
         bitmapManager = BitmapManager.getInstance(this);
         bitmapManager.setRootExt(Constant.rootExt);
         bitmapManager.setRootInt(Constant.rootInt);
         btnPhoto.setOnClickListener(this);
+        fab.setOnClickListener(this);
     }
 
     @Override
@@ -85,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
 
-        if (v.getId() == R.id.btnPhoto) {
+        if( v == btnPhoto ){
             AlertDialog.Builder myAlertDialog = new AlertDialog.Builder(this);
             myAlertDialog.setTitle(R.string.dialog_title_picture_option);
             myAlertDialog.setItems(R.array.option_pick_picture, new DialogInterface.OnClickListener() {
@@ -131,6 +138,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             myAlertDialog.setCancelable(false);
             myAlertDialog.show();
         }
+
+        if( v == fab ){
+
+            float rotate = (this.rotate+90)%360;
+            imgPhoto.setRotation(rotate);
+            this.rotate = rotate;
+        }
     }
 
     private void save(Uri uri){
@@ -142,7 +156,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             double ratio = (double)bitmap.getWidth()/bitmap.getHeight();
             int width = (bitmap.getWidth() <= bitmap.getHeight())? minSize: (int)(minSize*ratio);
             int height = (bitmap.getWidth() <= bitmap.getHeight())? (int)(minSize/ratio): minSize;
-            bitmapManager.storeImage(bitmapManager.rotateWithScale(bitmap, 0, width, height), uri, 100);
+            bitmapManager.storeImage(bitmapManager.rotateWithScale(bitmap, rotate, width, height), uri, 100);
             bitmapManager.scanMediaFile(new File(bitmapManager.getRealPathFromUri(uri)));
         }catch (Exception e){
             Toast.makeText(getApplicationContext(), e.getMessage()+"", Toast.LENGTH_LONG).show();
