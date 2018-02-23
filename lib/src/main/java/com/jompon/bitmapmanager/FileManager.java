@@ -69,7 +69,7 @@ public class FileManager {
 
     public void copyFile(File sourceFile, File destFile) throws IOException {
         if (!sourceFile.exists()) {
-            return;
+            throw new IOException();
         }
 
         FileChannel source = null;
