@@ -124,7 +124,7 @@ public class BitmapManager extends FileManager{
      * @param uri of file
      * @return bitmap that real angle
      */
-    private Bitmap getRealRotate(Bitmap bitmap, Uri uri)
+    public Bitmap getRealRotate(Bitmap bitmap, Uri uri)
     {
         int rotate = 0;
         try {

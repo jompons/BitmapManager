@@ -137,11 +137,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         try{
             int minSize = 600;
-            Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+            Bitmap oriBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+            Bitmap bitmap = bitmapManager.getRealRotate(oriBitmap, uri);
             double ratio = (double)bitmap.getWidth()/bitmap.getHeight();
             int width = (bitmap.getWidth() <= bitmap.getHeight())? minSize: (int)(minSize*ratio);
             int height = (bitmap.getWidth() <= bitmap.getHeight())? (int)(minSize/ratio): minSize;
-            bitmapManager.storeImage(bitmapManager.rotateWithScale(bitmap, 0, width, height), uri, 90);
+            bitmapManager.storeImage(bitmapManager.rotateWithScale(bitmap, 0, width, height), uri, 100);
             bitmapManager.scanMediaFile(new File(bitmapManager.getRealPathFromUri(uri)));
         }catch (Exception e){
             Toast.makeText(getApplicationContext(), e.getMessage()+"", Toast.LENGTH_LONG).show();
