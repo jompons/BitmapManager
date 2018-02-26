@@ -260,23 +260,16 @@ public class BitmapManager extends FileManager{
         }
     }
 
-    public Bitmap rotateWithScale(Bitmap source, float angle, int width, int height)
-    {
-        try{
-            Bitmap image = getResizedBitmap(source, width, height);
-            Matrix matrix = new Matrix();
-            matrix.postRotate(angle);
-            return Bitmap.createBitmap(image, 0, 0, image.getWidth(), image.getHeight(), matrix, true);
-        }catch (OutOfMemoryError e){
-            return source;
-        }catch (Exception e){
-            return source;
-        }
-    }
-
-    public Bitmap getResizedBitmap(Bitmap bm, int newWidth, int newHeight) {
-        int width = bm.getWidth();
-        int height = bm.getHeight();
+    /**
+     * Scale size of bitmap according to define
+     * @param bitmap source
+     * @param newWidth according to define
+     * @param newHeight according to define
+     * @return bitmap according to defined scale sized
+     */
+    public Bitmap getScaleSize(Bitmap bitmap, int newWidth, int newHeight) {
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
         float scaleWidth = ((float) newWidth) / width;
         float scaleHeight = ((float) newHeight) / height;
         // CREATE A MATRIX FOR THE MANIPULATION
@@ -285,12 +278,23 @@ public class BitmapManager extends FileManager{
         matrix.postScale(scaleWidth, scaleHeight);
 
         // "RECREATE" THE NEW BITMAP
-        Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width, height, matrix, true);
-//        if (resizedBitmap != bm) {
-//            if( !bm.isRecycled() )
-//                bm.recycle();
-//        }
-        return resizedBitmap;
+        return Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
+    }
+
+    /**
+     * Scale size and angle of bitmap according to define
+     * @param bitmap source
+     * @param newWidth according to define
+     * @param newHeight according to define
+     * @param angle according to degree
+     * @return bitmap according to defined angle and scale sized
+     */
+    public Bitmap getScaleSize(Bitmap bitmap, int newWidth, int newHeight, float angle)
+    {
+        Bitmap image = getScaleSize(bitmap, newWidth, newHeight);
+        Matrix matrix = new Matrix();
+        matrix.postRotate(angle);
+        return Bitmap.createBitmap(image, 0, 0, image.getWidth(), image.getHeight(), matrix, true);
     }
 
     // Decodes image and scales it to reduce memory consumption
