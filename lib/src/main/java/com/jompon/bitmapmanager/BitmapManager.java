@@ -173,10 +173,22 @@ public class BitmapManager extends FileManager{
     }
 
     /**
+     * Get bitmap with real rotate
+     * @param uri of image file path
+     * @return bitmap which real rotated
+     * @throws IOException if file not exist
+     */
+    public Bitmap getRealRotate(Uri uri) throws IOException
+    {
+        Bitmap bitmap = getBitmap(uri);
+        return getRealRotate(bitmap, uri);
+    }
+
+    /**
      * Get bitmap which define pixel size and get real rotate
      * @param uri of image file path
      * @param maxSize of Pixel
-     * @return bitmap which reduce size and real rotate
+     * @return bitmap which reduce sized and real rotated
      */
     public Bitmap getRealRotate(Uri uri, int maxSize)
     {
