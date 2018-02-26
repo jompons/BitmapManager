@@ -215,42 +215,20 @@ public class BitmapManager extends FileManager{
     }
 
     /**
-     * save image by replaced to uri path
-     * @param uri
+     * save image jpeg according to define quality to uri file path.
+     * @param uri source
+     * @param quality of image; 0-100
      */
-    public void storeImage(Uri uri, int quality) {
+    public boolean save(Uri uri, int quality) {
 
+        boolean isSaved = false;
         try {
             Bitmap bitmap = getBitmap(uri);
             Bitmap image = getRealRotate(bitmap, uri);
             String path = getRealPathFromUri(uri);
             File pictureFile = new File(path);
             FileOutputStream fos = new FileOutputStream(pictureFile);
-            image.compress(Bitmap.CompressFormat.JPEG, quality, fos);
-            image.recycle();
-            fos.close();
-        } catch (FileNotFoundException e) {
-            Log.d(TAG, "File not found: " + e.getMessage());
-        } catch (IOException e) {
-            Log.d(TAG, "Error accessing file: " + e.getMessage());
-        }
-    }
-
-    /**
-     * save image with bitmap by replaced to uri path
-     * @param image
-     * @param uri
-     */
-    public void storeImage(Bitmap image, Uri uri, int quality) {
-
-        try {
-            String path = getRealPathFromUri(uri);
-            File pictureFile = new File(path);
-            FileOutputStream fos = new FileOutputStream(pictureFile);
-            image.compress(Bitmap.CompressFormat.JPEG, quality, fos);
-            if( !image.isRecycled() ){
-                image.recycle();
-            }
+            isSaved = image.compress(Bitmap.CompressFormat.JPEG, quality, fos);
             fos.flush();
             fos.close();
         } catch (FileNotFoundException e) {
@@ -258,6 +236,82 @@ public class BitmapManager extends FileManager{
         } catch (IOException e) {
             Log.d(TAG, "Error accessing file: " + e.getMessage());
         }
+        return isSaved;
+    }
+
+    /**
+     * save image jpeg according to define quality and bitmap to uri file path.
+     * @param uri source
+     * @param quality of image; 0-100
+     * @param image source of bitmap type
+     */
+    public boolean save(Uri uri, int quality, Bitmap image) {
+
+        boolean isSaved = false;
+        try {
+            String path = getRealPathFromUri(uri);
+            File pictureFile = new File(path);
+            FileOutputStream fos = new FileOutputStream(pictureFile);
+            isSaved = image.compress(Bitmap.CompressFormat.JPEG, quality, fos);
+            fos.flush();
+            fos.close();
+        } catch (FileNotFoundException e) {
+            Log.d(TAG, "File not found: " + e.getMessage());
+        } catch (IOException e) {
+            Log.d(TAG, "Error accessing file: " + e.getMessage());
+        }
+        return isSaved;
+    }
+
+    /**
+     * save image according to define quality and compressFormat to uri file path.
+     * @param uri source
+     * @param quality of image; 0-100
+     * @param compressFormat type
+     */
+    public boolean save(Uri uri, int quality, Bitmap.CompressFormat compressFormat) {
+
+        boolean isSaved = false;
+        try {
+            Bitmap bitmap = getBitmap(uri);
+            Bitmap image = getRealRotate(bitmap, uri);
+            String path = getRealPathFromUri(uri);
+            File pictureFile = new File(path);
+            FileOutputStream fos = new FileOutputStream(pictureFile);
+            isSaved = image.compress(compressFormat, quality, fos);
+            fos.flush();
+            fos.close();
+        } catch (FileNotFoundException e) {
+            Log.d(TAG, "File not found: " + e.getMessage());
+        } catch (IOException e) {
+            Log.d(TAG, "Error accessing file: " + e.getMessage());
+        }
+        return isSaved;
+    }
+
+    /**
+     * save image according to define quality, bitmap and compressFormat to uri file path.
+     * @param uri source
+     * @param quality of image; 0-100
+     * @param image source of bitmap type
+     * @param compressFormat type
+     */
+    public boolean save(Uri uri, int quality, Bitmap image, Bitmap.CompressFormat compressFormat) {
+
+        boolean isSaved = false;
+        try {
+            String path = getRealPathFromUri(uri);
+            File pictureFile = new File(path);
+            FileOutputStream fos = new FileOutputStream(pictureFile);
+            isSaved = image.compress(compressFormat, quality, fos);
+            fos.flush();
+            fos.close();
+        } catch (FileNotFoundException e) {
+            Log.d(TAG, "File not found: " + e.getMessage());
+        } catch (IOException e) {
+            Log.d(TAG, "Error accessing file: " + e.getMessage());
+        }
+        return isSaved;
     }
 
     /**
