@@ -34,51 +34,24 @@ public class BitmapManager extends FileManager{
         super(context);
     }
 
-    public Bitmap resizeBitmap(Uri uri, int baseSampleSize, int width, int height) throws FileNotFoundException
-    {
-        // First we get the the dimensions of the file on disk
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        Bitmap bitmap = BitmapFactory.decodeStream(context.getContentResolver().openInputStream(uri), null, options);
-
-        int outHeight = options.outHeight;
-        int outWidth = options.outWidth;
-        int inSampleSize = baseSampleSize;
-
-        if (outHeight > height || outWidth > width)
-        {
-            inSampleSize *= outWidth > outHeight
-                    ? outHeight / height
-                    : outWidth / width;
-        }
-
-        // Now we will load the image and have BitmapFactory resize it for us.
-        options.inSampleSize = inSampleSize;
-        options.inJustDecodeBounds = false;
-        Bitmap resizedBitmap = BitmapFactory.decodeStream(context.getContentResolver().openInputStream(uri), null, options);
-        if( bitmap != null && !bitmap.isRecycled() )
-            bitmap.recycle();
-
-        return resizedBitmap;
-    }
-
     /**
-     * Get bitmap with MediaStore class
+     * Get bitmap from uri with MediaStore class.
      * @param uri of image file path
      * @return bitmap
      * @throws IOException if file not exist
      */
-    public Bitmap getBitmap(Uri uri) throws IOException
+    public Bitmap load(Uri uri) throws IOException
     {
         return MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
     }
 
     /**
-     * Get bitmap from uri
+     * Get bitmap from uri according to size of pixel.
      * @param uri of image file path
      * @param maxSize of Pixel
      * @return bitmap
      */
-    public Bitmap getBitmap(Uri uri, int maxSize) {
+    public Bitmap load(Uri uri, int maxSize) {
 
         InputStream in = null;
         Bitmap b = null;
@@ -127,11 +100,76 @@ public class BitmapManager extends FileManager{
             //Log.d(TAG, "bitmap size - width: " +b.getWidth() + ", height: " + b.getHeight());
             return b;
         } catch (Exception e) {
-            //Log.e(TAG, e.getMessage(), e);
-            if( b != null )
-                return b;
-            return null;
+            Log.e(TAG, e.getMessage(), e);
+            return b;
         }
+    }
+
+    /**
+     * Get bitmap from uri according to baseSampleSize and image size.
+     * @param uri of image file path
+     * @param baseSampleSize of miniaturize minimum
+     * @param width of pixel size
+     * @param height of pixel size
+     * @return bitmap according to defined size but size is not exactly
+     * because it calculate according by multiple
+     * for example
+     * define width = 1080 but bitmap width = 1200 -> new bitmap width = 1200 because inSampleSize = 1
+     * define width = 1080 but bitmap width = 2200 -> new bitmap width = 1100 because inSampleSize = 2
+     * define width = 1080 but bitmap width = 2160 -> new bitmap width = 1080 because inSampleSize = 2
+     */
+    public Bitmap load(Uri uri, int baseSampleSize, int width, int height)
+    {
+        Bitmap bitmap = null;
+        try{
+            // First we get the the dimensions of the file on disk
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            bitmap = BitmapFactory.decodeStream(context.getContentResolver().openInputStream(uri), null, options);
+
+            int outHeight = options.outHeight;
+            int outWidth = options.outWidth;
+            int inSampleSize = baseSampleSize;
+
+            if (outHeight > height || outWidth > width)
+            {
+                inSampleSize *= outWidth > outHeight
+                        ? outHeight / height
+                        : outWidth / width;
+            }
+
+            // Now we will load the image and have BitmapFactory resize it for us.
+            options.inSampleSize = inSampleSize;
+            options.inJustDecodeBounds = false;
+
+            return BitmapFactory.decodeStream(context.getContentResolver().openInputStream(uri), null, options);
+        }catch (FileNotFoundException e){
+            Log.e(TAG, e.getMessage(), e);
+            return bitmap;
+        }
+    }
+
+    /**
+     * Get bitmap with real rotate by Exif angle.
+     * @param uri of image file path
+     * @return bitmap rotated
+     * @throws IOException if file not exist
+     */
+    public Bitmap loadRealRotate(Uri uri) throws IOException
+    {
+        Bitmap bitmap = load(uri);
+        return getRealRotate(bitmap, uri);
+    }
+
+    /**
+     * Get bitmap with real rotate by Exif angle which according to define pixel size.
+     * @param uri of image file path
+     * @param maxSize of Pixel
+     * @return bitmap rotated which according to defined size
+     */
+    public Bitmap loadRealRotate(Uri uri, int maxSize)
+    {
+        Bitmap bitmap = load(uri, maxSize);
+        return getRealRotate(bitmap, uri);
     }
 
     /**
@@ -172,30 +210,6 @@ public class BitmapManager extends FileManager{
         }
     }
 
-    /**
-     * Get bitmap with real rotate
-     * @param uri of image file path
-     * @return bitmap which real rotated
-     * @throws IOException if file not exist
-     */
-    public Bitmap getRealRotate(Uri uri) throws IOException
-    {
-        Bitmap bitmap = getBitmap(uri);
-        return getRealRotate(bitmap, uri);
-    }
-
-    /**
-     * Get bitmap which define pixel size and get real rotate
-     * @param uri of image file path
-     * @param maxSize of Pixel
-     * @return bitmap which reduce sized and real rotated
-     */
-    public Bitmap getRealRotate(Uri uri, int maxSize)
-    {
-        Bitmap bitmap = getBitmap(uri, maxSize);
-        return getRealRotate(bitmap, uri);
-    }
-
     public String getRealPathFromUri(Uri contentUri) {
         Cursor cursor = null;
         try {
@@ -221,7 +235,7 @@ public class BitmapManager extends FileManager{
      */
     public void save(Uri uri, int quality) throws Exception{
 
-        Bitmap bitmap = getBitmap(uri);
+        Bitmap bitmap = load(uri);
         Bitmap image = getRealRotate(bitmap, uri);
         String path = getRealPathFromUri(uri);
         File pictureFile = new File(path);
@@ -263,7 +277,7 @@ public class BitmapManager extends FileManager{
      */
     public void save(Uri uri, int quality, Bitmap.CompressFormat compressFormat) throws Exception{
 
-        Bitmap bitmap = getBitmap(uri);
+        Bitmap bitmap = load(uri);
         Bitmap image = getRealRotate(bitmap, uri);
         String path = getRealPathFromUri(uri);
         File pictureFile = new File(path);

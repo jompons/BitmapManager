@@ -152,7 +152,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         try{
             int minSize = 600;
-            Bitmap oriBitmap = bitmapManager.getBitmap(uri);
+            Bitmap oriBitmap = bitmapManager.load(uri);
             Bitmap bitmap = bitmapManager.getRealRotate(oriBitmap, uri);
             double ratio = (double)bitmap.getWidth()/bitmap.getHeight();
             int width = (bitmap.getWidth() <= bitmap.getHeight())? minSize: (int)(minSize*ratio);
