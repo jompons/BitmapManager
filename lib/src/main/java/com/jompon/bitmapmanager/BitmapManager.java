@@ -8,6 +8,7 @@ import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.annotation.IntRange;
 import android.util.Log;
 
 import java.io.File;
@@ -253,9 +254,9 @@ public class BitmapManager extends FileManager{
     /**
      * save image jpeg according to define quality to uri file path.
      * @param uri source
-     * @param quality of image; 0-100
+     * @param quality of image
      */
-    public void save(Uri uri, int quality) throws Exception{
+    public void save(Uri uri, @IntRange(from=0, to=100) int quality) throws Exception{
 
         Bitmap bitmap = load(uri);
         Bitmap image = getRealRotate(bitmap, uri);
@@ -274,10 +275,10 @@ public class BitmapManager extends FileManager{
     /**
      * save image jpeg according to define quality and bitmap to uri file path.
      * @param uri source
-     * @param quality of image; 0-100
+     * @param quality of image
      * @param image source of bitmap type
      */
-    public void save(Uri uri, int quality, Bitmap image) throws Exception{
+    public void save(Uri uri, @IntRange(from=0, to=100) int quality, Bitmap image) throws Exception{
 
         String path = getRealPath(uri);
         File pictureFile = new File(path);
@@ -294,10 +295,10 @@ public class BitmapManager extends FileManager{
     /**
      * save image according to define quality and compressFormat to uri file path.
      * @param uri source
-     * @param quality of image; 0-100
+     * @param quality of image
      * @param compressFormat type
      */
-    public void save(Uri uri, int quality, Bitmap.CompressFormat compressFormat) throws Exception{
+    public void save(Uri uri, @IntRange(from=0, to=100) int quality, Bitmap.CompressFormat compressFormat) throws Exception{
 
         Bitmap bitmap = load(uri);
         Bitmap image = getRealRotate(bitmap, uri);
@@ -316,11 +317,11 @@ public class BitmapManager extends FileManager{
     /**
      * save image according to define quality, bitmap and compressFormat to uri file path.
      * @param uri source
-     * @param quality of image; 0-100
+     * @param quality of image
      * @param image source of bitmap type
      * @param compressFormat type
      */
-    public void save(Uri uri, int quality, Bitmap image, Bitmap.CompressFormat compressFormat) throws Exception{
+    public void save(Uri uri, @IntRange(from=0, to=100) int quality, Bitmap image, Bitmap.CompressFormat compressFormat) throws Exception{
 
         String path = getRealPath(uri);
         File pictureFile = new File(path);
