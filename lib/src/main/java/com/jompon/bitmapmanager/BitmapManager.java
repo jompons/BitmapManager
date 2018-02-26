@@ -48,7 +48,7 @@ public class BitmapManager extends FileManager{
     /**
      * Get bitmap from uri according to size of pixel.
      * @param uri of image file path
-     * @param maxSize of Pixel
+     * @param maxSize of pixel
      * @return bitmap
      */
     public Bitmap load(Uri uri, int maxSize) {
@@ -163,12 +163,26 @@ public class BitmapManager extends FileManager{
     /**
      * Get bitmap with real rotate by Exif angle which according to define pixel size.
      * @param uri of image file path
-     * @param maxSize of Pixel
+     * @param maxSize of pixel
      * @return bitmap rotated which according to defined size
      */
     public Bitmap loadRealRotate(Uri uri, int maxSize)
     {
         Bitmap bitmap = load(uri, maxSize);
+        return getRealRotate(bitmap, uri);
+    }
+
+    /**
+     * Get bitmap with real rotate by Exif angle which according to define pixel size.
+     * @param uri of image file path
+     * @param baseSampleSize of miniaturize minimum
+     * @param width of pixel size
+     * @param height of pixel size
+     * @return bitmap rotated which according to defined baseSampleSize and size
+     */
+    public Bitmap loadRealRotate(Uri uri, int baseSampleSize, int width, int height)
+    {
+        Bitmap bitmap = load(uri, baseSampleSize, width, height);
         return getRealRotate(bitmap, uri);
     }
 
