@@ -219,24 +219,20 @@ public class BitmapManager extends FileManager{
      * @param uri source
      * @param quality of image; 0-100
      */
-    public boolean save(Uri uri, int quality) {
+    public void save(Uri uri, int quality) throws Exception{
 
-        boolean isSaved = false;
-        try {
-            Bitmap bitmap = getBitmap(uri);
-            Bitmap image = getRealRotate(bitmap, uri);
-            String path = getRealPathFromUri(uri);
-            File pictureFile = new File(path);
-            FileOutputStream fos = new FileOutputStream(pictureFile);
-            isSaved = image.compress(Bitmap.CompressFormat.JPEG, quality, fos);
+        Bitmap bitmap = getBitmap(uri);
+        Bitmap image = getRealRotate(bitmap, uri);
+        String path = getRealPathFromUri(uri);
+        File pictureFile = new File(path);
+        FileOutputStream fos = new FileOutputStream(pictureFile);
+        if( !image.compress(Bitmap.CompressFormat.JPEG, quality, fos) ){
             fos.flush();
             fos.close();
-        } catch (FileNotFoundException e) {
-            Log.d(TAG, "File not found: " + e.getMessage());
-        } catch (IOException e) {
-            Log.d(TAG, "Error accessing file: " + e.getMessage());
+            throw new Exception("Cannot Save");
         }
-        return isSaved;
+        fos.flush();
+        fos.close();
     }
 
     /**
@@ -245,22 +241,18 @@ public class BitmapManager extends FileManager{
      * @param quality of image; 0-100
      * @param image source of bitmap type
      */
-    public boolean save(Uri uri, int quality, Bitmap image) {
+    public void save(Uri uri, int quality, Bitmap image) throws Exception{
 
-        boolean isSaved = false;
-        try {
-            String path = getRealPathFromUri(uri);
-            File pictureFile = new File(path);
-            FileOutputStream fos = new FileOutputStream(pictureFile);
-            isSaved = image.compress(Bitmap.CompressFormat.JPEG, quality, fos);
+        String path = getRealPathFromUri(uri);
+        File pictureFile = new File(path);
+        FileOutputStream fos = new FileOutputStream(pictureFile);
+        if( !image.compress(Bitmap.CompressFormat.JPEG, quality, fos) ){
             fos.flush();
             fos.close();
-        } catch (FileNotFoundException e) {
-            Log.d(TAG, "File not found: " + e.getMessage());
-        } catch (IOException e) {
-            Log.d(TAG, "Error accessing file: " + e.getMessage());
+            throw new Exception("Cannot Save");
         }
-        return isSaved;
+        fos.flush();
+        fos.close();
     }
 
     /**
@@ -269,24 +261,20 @@ public class BitmapManager extends FileManager{
      * @param quality of image; 0-100
      * @param compressFormat type
      */
-    public boolean save(Uri uri, int quality, Bitmap.CompressFormat compressFormat) {
+    public void save(Uri uri, int quality, Bitmap.CompressFormat compressFormat) throws Exception{
 
-        boolean isSaved = false;
-        try {
-            Bitmap bitmap = getBitmap(uri);
-            Bitmap image = getRealRotate(bitmap, uri);
-            String path = getRealPathFromUri(uri);
-            File pictureFile = new File(path);
-            FileOutputStream fos = new FileOutputStream(pictureFile);
-            isSaved = image.compress(compressFormat, quality, fos);
+        Bitmap bitmap = getBitmap(uri);
+        Bitmap image = getRealRotate(bitmap, uri);
+        String path = getRealPathFromUri(uri);
+        File pictureFile = new File(path);
+        FileOutputStream fos = new FileOutputStream(pictureFile);
+        if( !image.compress(compressFormat, quality, fos) ){
             fos.flush();
             fos.close();
-        } catch (FileNotFoundException e) {
-            Log.d(TAG, "File not found: " + e.getMessage());
-        } catch (IOException e) {
-            Log.d(TAG, "Error accessing file: " + e.getMessage());
+            throw new Exception("Cannot Save");
         }
-        return isSaved;
+        fos.flush();
+        fos.close();
     }
 
     /**
@@ -296,22 +284,18 @@ public class BitmapManager extends FileManager{
      * @param image source of bitmap type
      * @param compressFormat type
      */
-    public boolean save(Uri uri, int quality, Bitmap image, Bitmap.CompressFormat compressFormat) {
+    public void save(Uri uri, int quality, Bitmap image, Bitmap.CompressFormat compressFormat) throws Exception{
 
-        boolean isSaved = false;
-        try {
-            String path = getRealPathFromUri(uri);
-            File pictureFile = new File(path);
-            FileOutputStream fos = new FileOutputStream(pictureFile);
-            isSaved = image.compress(compressFormat, quality, fos);
+        String path = getRealPathFromUri(uri);
+        File pictureFile = new File(path);
+        FileOutputStream fos = new FileOutputStream(pictureFile);
+        if( !image.compress(compressFormat, quality, fos) ){
             fos.flush();
             fos.close();
-        } catch (FileNotFoundException e) {
-            Log.d(TAG, "File not found: " + e.getMessage());
-        } catch (IOException e) {
-            Log.d(TAG, "Error accessing file: " + e.getMessage());
+            throw new Exception("Cannot Save");
         }
-        return isSaved;
+        fos.flush();
+        fos.close();
     }
 
     /**
