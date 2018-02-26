@@ -34,6 +34,32 @@ public class BitmapManager extends FileManager{
         super(context);
     }
 
+    // Decodes image and scales it to reduce memory consumption
+    public Bitmap decodeFile(File f) {
+        try {
+            // Decode image size
+            BitmapFactory.Options o = new BitmapFactory.Options();
+            o.inJustDecodeBounds = true;
+            BitmapFactory.decodeStream(new FileInputStream(f), null, o);
+
+            // The new size we want to scale to
+            final int REQUIRED_SIZE=600;
+
+            // Find the correct scale value. It should be the power of 2.
+            int scale = 1;
+            while(o.outWidth / scale > REQUIRED_SIZE &&
+                    o.outHeight / scale > REQUIRED_SIZE) {
+                scale *= 2;
+            }
+
+            // Decode with inSampleSize
+            BitmapFactory.Options o2 = new BitmapFactory.Options();
+            o2.inSampleSize = scale;
+            return BitmapFactory.decodeStream(new FileInputStream(f), null, o2);
+        } catch (FileNotFoundException e) {}
+        return null;
+    }
+
     /**
      * Get bitmap from uri with MediaStore class.
      * @param uri of image file path
@@ -315,7 +341,7 @@ public class BitmapManager extends FileManager{
      * @param newHeight according to define
      * @return bitmap according to defined scale sized
      */
-    public Bitmap getScaleSize(Bitmap bitmap, int newWidth, int newHeight)
+    public Bitmap matrixResize(Bitmap bitmap, int newWidth, int newHeight)
     {
         int width = bitmap.getWidth();
         int height = bitmap.getHeight();
@@ -338,38 +364,12 @@ public class BitmapManager extends FileManager{
      * @param angle according to degree
      * @return bitmap according to defined angle and scale sized
      */
-    public Bitmap getScaleSize(Bitmap bitmap, int newWidth, int newHeight, float angle)
+    public Bitmap matrixResize(Bitmap bitmap, int newWidth, int newHeight, float angle)
     {
-        Bitmap image = getScaleSize(bitmap, newWidth, newHeight);
+        Bitmap image = matrixResize(bitmap, newWidth, newHeight);
         Matrix matrix = new Matrix();
         matrix.postRotate(angle);
         return Bitmap.createBitmap(image, 0, 0, image.getWidth(), image.getHeight(), matrix, true);
-    }
-
-    // Decodes image and scales it to reduce memory consumption
-    public Bitmap decodeFile(File f) {
-        try {
-            // Decode image size
-            BitmapFactory.Options o = new BitmapFactory.Options();
-            o.inJustDecodeBounds = true;
-            BitmapFactory.decodeStream(new FileInputStream(f), null, o);
-
-            // The new size we want to scale to
-            final int REQUIRED_SIZE=600;
-
-            // Find the correct scale value. It should be the power of 2.
-            int scale = 1;
-            while(o.outWidth / scale > REQUIRED_SIZE &&
-                    o.outHeight / scale > REQUIRED_SIZE) {
-                scale *= 2;
-            }
-
-            // Decode with inSampleSize
-            BitmapFactory.Options o2 = new BitmapFactory.Options();
-            o2.inSampleSize = scale;
-            return BitmapFactory.decodeStream(new FileInputStream(f), null, o2);
-        } catch (FileNotFoundException e) {}
-        return null;
     }
 
     /**
