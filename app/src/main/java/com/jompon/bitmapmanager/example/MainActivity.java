@@ -157,7 +157,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             double ratio = (double)bitmap.getWidth()/bitmap.getHeight();
             int width = (bitmap.getWidth() <= bitmap.getHeight())? minSize: (int)(minSize*ratio);
             int height = (bitmap.getWidth() <= bitmap.getHeight())? (int)(minSize/ratio): minSize;
-            bitmapManager.save(uri, 100, bitmapManager.getScaleSize(bitmap, width, height, rotate));
+            bitmapManager.save(uri, 100, bitmapManager.matrixResize(bitmap, width, height, rotate));
             bitmapManager.scanMediaFile(new File(bitmapManager.getRealPath(uri)));
             oriBitmap.recycle();
             bitmap.recycle();
