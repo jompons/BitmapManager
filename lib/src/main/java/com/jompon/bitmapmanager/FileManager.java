@@ -1,9 +1,11 @@
 package com.jompon.bitmapmanager;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
+import android.support.annotation.RequiresPermission;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -67,6 +69,7 @@ public class FileManager {
         rootInt = new File(path);
     }
 
+    @RequiresPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
     public void copyFile(File sourceFile, File destFile) throws IOException {
         if (!sourceFile.exists()) {
             throw new IOException();
