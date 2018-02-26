@@ -61,6 +61,12 @@ public class BitmapManager extends FileManager{
         return resizedBitmap;
     }
 
+    /**
+     * Get bitmap with MediaStore class
+     * @param uri of image file path
+     * @return bitmap
+     * @throws IOException if file not exist
+     */
     public Bitmap getBitmap(Uri uri) throws IOException
     {
         return MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
