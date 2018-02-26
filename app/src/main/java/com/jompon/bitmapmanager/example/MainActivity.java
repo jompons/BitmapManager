@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnPhoto = (Button) findViewById(R.id.btnPhoto);
         imgPhoto = (ImageView) findViewById(R.id.imgPhoto);
         fab = (FloatingActionButton) findViewById(R.id.fab);
-        bitmapManager = BitmapManager.getInstance(this);
+        bitmapManager = BitmapManager.getInstance(getApplicationContext());
         bitmapManager.setRootExt(Constant.rootExt);
         bitmapManager.setRootInt(Constant.rootInt);
         btnPhoto.setOnClickListener(this);
@@ -152,7 +152,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         try{
             int minSize = 600;
-            Bitmap oriBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+            Bitmap oriBitmap = bitmapManager.getBitmap(uri);
             Bitmap bitmap = bitmapManager.getRealRotate(oriBitmap, uri);
             double ratio = (double)bitmap.getWidth()/bitmap.getHeight();
             int width = (bitmap.getWidth() <= bitmap.getHeight())? minSize: (int)(minSize*ratio);
