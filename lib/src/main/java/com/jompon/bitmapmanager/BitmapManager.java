@@ -196,7 +196,7 @@ public class BitmapManager extends FileManager{
     {
         int rotate = 0;
         try {
-            String path = getRealPathFromUri(uri);
+            String path = getRealPath(uri);
             File imageFile = new File(path);
             ExifInterface exif = new ExifInterface(imageFile.getAbsolutePath());
             int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
@@ -224,24 +224,6 @@ public class BitmapManager extends FileManager{
         }
     }
 
-    public String getRealPathFromUri(Uri contentUri) {
-        Cursor cursor = null;
-        try {
-            String[] proj = { MediaStore.Images.Media.DATA };
-            cursor = context.getContentResolver().query(contentUri, proj, null, null, null);
-            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            cursor.moveToFirst();
-            String path = cursor.getString(column_index);
-            return path;
-        } catch (Exception e){
-            return contentUri.getPath();
-        } finally{
-            if (cursor != null) {
-                cursor.close();
-            }
-        }
-    }
-
     /**
      * save image jpeg according to define quality to uri file path.
      * @param uri source
@@ -251,7 +233,7 @@ public class BitmapManager extends FileManager{
 
         Bitmap bitmap = load(uri);
         Bitmap image = getRealRotate(bitmap, uri);
-        String path = getRealPathFromUri(uri);
+        String path = getRealPath(uri);
         File pictureFile = new File(path);
         FileOutputStream fos = new FileOutputStream(pictureFile);
         if( !image.compress(Bitmap.CompressFormat.JPEG, quality, fos) ){
@@ -271,7 +253,7 @@ public class BitmapManager extends FileManager{
      */
     public void save(Uri uri, int quality, Bitmap image) throws Exception{
 
-        String path = getRealPathFromUri(uri);
+        String path = getRealPath(uri);
         File pictureFile = new File(path);
         FileOutputStream fos = new FileOutputStream(pictureFile);
         if( !image.compress(Bitmap.CompressFormat.JPEG, quality, fos) ){
@@ -293,7 +275,7 @@ public class BitmapManager extends FileManager{
 
         Bitmap bitmap = load(uri);
         Bitmap image = getRealRotate(bitmap, uri);
-        String path = getRealPathFromUri(uri);
+        String path = getRealPath(uri);
         File pictureFile = new File(path);
         FileOutputStream fos = new FileOutputStream(pictureFile);
         if( !image.compress(compressFormat, quality, fos) ){
@@ -314,7 +296,7 @@ public class BitmapManager extends FileManager{
      */
     public void save(Uri uri, int quality, Bitmap image, Bitmap.CompressFormat compressFormat) throws Exception{
 
-        String path = getRealPathFromUri(uri);
+        String path = getRealPath(uri);
         File pictureFile = new File(path);
         FileOutputStream fos = new FileOutputStream(pictureFile);
         if( !image.compress(compressFormat, quality, fos) ){
@@ -430,5 +412,28 @@ public class BitmapManager extends FileManager{
             height = (int) (width / bitmapRatio);
         }
         return Bitmap.createScaledBitmap(bitmap, width, height, true);
+    }
+
+    /**
+     * Get real path of uri
+     * @param uri source
+     * @return real path of uri
+     */
+    public String getRealPath(Uri uri) {
+        Cursor cursor = null;
+        try {
+            String[] proj = { MediaStore.Images.Media.DATA };
+            cursor = context.getContentResolver().query(uri, proj, null, null, null);
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            String path = cursor.getString(column_index);
+            return path;
+        } catch (Exception e){
+            return uri.getPath();
+        } finally{
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
     }
 }
