@@ -21,28 +21,33 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <LinearLayout
-        android:orientation="vertical"
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <Button
-            android:id="@+id/btnPhoto"
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Photo" />
+            android:layout_height="match_parent" >
 
-        <ImageView
-            android:id="@+id/imgPhoto"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:adjustViewBounds="true"
-            android:scaleType="fitCenter"
-            android:contentDescription="@null"
-            app:srcCompat="@mipmap/ic_launcher" />
-    </LinearLayout>
+            <Button
+                android:id="@+id/btnPhoto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Photo" />
+
+            <ImageView
+                android:id="@+id/imgPhoto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                android:contentDescription="@null"
+                app:srcCompat="@mipmap/ic_launcher" />
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
