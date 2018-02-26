@@ -162,13 +162,14 @@ public class BitmapManager extends FileManager{
     }
 
     /**
-     * get bitmap which reduce size and real rotate
-     * @param uri
+     * Get bitmap which define pixel size and get real rotate
+     * @param uri of image file path
+     * @param maxSize of Pixel
      * @return bitmap which reduce size and real rotate
      */
-    public Bitmap getRealRotate(Uri uri)
+    public Bitmap getRealRotate(Uri uri, int maxSize)
     {
-        Bitmap bitmap = getBitmap(uri);
+        Bitmap bitmap = getBitmap(uri, maxSize);
         return getRealRotate(bitmap, uri);
     }
 
