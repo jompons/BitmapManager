@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         File sdImageMainDirectory = bitmapManager.getDestinationImageFilename();
 
                         //It cannot modify original image so need to copy file to new path
-                        bitmapManager.copyFile(new File(bitmapManager.getRealPathFromUri(mPhotoURI)), sdImageMainDirectory);
+                        bitmapManager.copyFile(new File(bitmapManager.getRealPath(mPhotoURI)), sdImageMainDirectory);
                         mPhotoURI = Uri.fromFile(sdImageMainDirectory);   //reference to new image path
 
                         imgPhoto.setImageURI(mPhotoURI);
@@ -158,7 +158,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             int width = (bitmap.getWidth() <= bitmap.getHeight())? minSize: (int)(minSize*ratio);
             int height = (bitmap.getWidth() <= bitmap.getHeight())? (int)(minSize/ratio): minSize;
             bitmapManager.save(uri, 100, bitmapManager.getScaleSize(bitmap, width, height, rotate));
-            bitmapManager.scanMediaFile(new File(bitmapManager.getRealPathFromUri(uri)));
+            bitmapManager.scanMediaFile(new File(bitmapManager.getRealPath(uri)));
             oriBitmap.recycle();
             bitmap.recycle();
         }catch (Exception e){
