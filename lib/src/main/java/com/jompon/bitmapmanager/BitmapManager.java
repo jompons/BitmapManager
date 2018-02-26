@@ -267,7 +267,8 @@ public class BitmapManager extends FileManager{
      * @param newHeight according to define
      * @return bitmap according to defined scale sized
      */
-    public Bitmap getScaleSize(Bitmap bitmap, int newWidth, int newHeight) {
+    public Bitmap getScaleSize(Bitmap bitmap, int newWidth, int newHeight)
+    {
         int width = bitmap.getWidth();
         int height = bitmap.getHeight();
         float scaleWidth = ((float) newWidth) / width;
@@ -324,14 +325,14 @@ public class BitmapManager extends FileManager{
     }
 
     /**
-     * reduces the size of the image
-     * @param image
-     * @param maxSize
-     * @return
+     * set size of one side according to define and another size is defined by ratio
+     * @param bitmap source
+     * @param maxSize of one side pixel
+     * @return bitmap according to defined size
      */
-    public Bitmap getResizedBitmap(Bitmap image, int maxSize) {
-        int width = image.getWidth();
-        int height = image.getHeight();
+    public Bitmap createScaledBitmapMaxSize(Bitmap bitmap, int maxSize) {
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
 
         float bitmapRatio = (float)width / (float) height;
         if (bitmapRatio > 1) {
@@ -341,18 +342,18 @@ public class BitmapManager extends FileManager{
             height = maxSize;
             width = (int) (height * bitmapRatio);
         }
-        return Bitmap.createScaledBitmap(image, width, height, true);
+        return Bitmap.createScaledBitmap(bitmap, width, height, true);
     }
 
     /**
-     * reduces the size of the image
-     * @param image
-     * @param minSize
-     * @return
+     * set size of one side according to define and another size is defined by ratio
+     * @param bitmap source
+     * @param minSize of one side pixel
+     * @return bitmap according to defined sized
      */
-    public Bitmap getResizedBitmap2(Bitmap image, int minSize) {
-        int width = image.getWidth();
-        int height = image.getHeight();
+    public Bitmap createScaledBitmapMinSize(Bitmap bitmap, int minSize) {
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
 
         float bitmapRatio = (float)width / (float) height;
         if (bitmapRatio > 1) {
@@ -362,6 +363,6 @@ public class BitmapManager extends FileManager{
             width = minSize;
             height = (int) (width / bitmapRatio);
         }
-        return Bitmap.createScaledBitmap(image, width, height, true);
+        return Bitmap.createScaledBitmap(bitmap, width, height, true);
     }
 }
