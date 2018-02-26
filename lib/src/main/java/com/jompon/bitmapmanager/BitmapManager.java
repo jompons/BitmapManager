@@ -61,6 +61,12 @@ public class BitmapManager extends FileManager{
         return resizedBitmap;
     }
 
+    /**
+     * Get bitmap from uri
+     * @param uri of image file path
+     * @param maxSize of Pixel
+     * @return bitmap
+     */
     public Bitmap getBitmap(Uri uri, int maxSize) {
 
         InputStream in = null;
