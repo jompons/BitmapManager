@@ -61,12 +61,11 @@ public class BitmapManager extends FileManager{
         return resizedBitmap;
     }
 
-    public Bitmap getBitmap(Uri uri) {
+    public Bitmap getBitmap(Uri uri, int maxSize) {
 
         InputStream in = null;
         Bitmap b = null;
         try {
-            final int IMAGE_MAX_SIZE = 500000;
             in = context.getContentResolver().openInputStream(uri);
 
             // Decode image size
@@ -76,7 +75,7 @@ public class BitmapManager extends FileManager{
             in.close();
 
             int scale = 1;
-            while ((o.outWidth * o.outHeight) * (1 / Math.pow(scale, 2)) > IMAGE_MAX_SIZE) {
+            while ((o.outWidth * o.outHeight) * (1 / Math.pow(scale, 2)) > maxSize) {
                 scale++;
             }
             //Log.d(TAG, "scale = " + scale + ", orig-width: " + o.outWidth + ", orig-height: " + o.outHeight);
@@ -95,7 +94,7 @@ public class BitmapManager extends FileManager{
                 int width = b.getWidth();
                 //Log.d(TAG, "1th scale operation dimenions - width: " + width + ", height: " + height);
 
-                double y = Math.sqrt(IMAGE_MAX_SIZE / (((double) width) / height));
+                double y = Math.sqrt(maxSize / (((double) width) / height));
                 double x = (y / height) * width;
 
                 Bitmap scaledBitmap = Bitmap.createScaledBitmap(b, (int) x, (int) y, true);
