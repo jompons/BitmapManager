@@ -27,9 +27,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
 
-/**
- * Created by Jompon.
- */
 public class FileManager {
 
     private static final String TAG = FileManager.class.getSimpleName();

@@ -34,9 +34,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-/**
- * Created by Jompon.
- */
 public class BitmapManager extends FileManager{
 
     private static final String TAG = BitmapManager.class.getSimpleName();

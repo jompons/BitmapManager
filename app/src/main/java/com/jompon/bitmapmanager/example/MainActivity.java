@@ -60,9 +60,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         setSupportActionBar(((Toolbar)findViewById(R.id.toolbar)));
 
+        bindingView();
+        bindingData();
+    }
+
+    private void bindingView( )
+    {
         btnPhoto = (Button) findViewById(R.id.btnPhoto);
         imgPhoto = (ImageView) findViewById(R.id.imgPhoto);
         fab = (FloatingActionButton) findViewById(R.id.fab);
+    }
+
+    private void bindingData( )
+    {
         bitmapManager = BitmapManager.getInstance(getApplicationContext());
         bitmapManager.setRootExt(Constant.rootExt);
         bitmapManager.setRootInt(Constant.rootInt);
